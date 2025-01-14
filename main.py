@@ -155,7 +155,3 @@ tk.Label(
 
 
 root.mainloop()
-
-
-
-
