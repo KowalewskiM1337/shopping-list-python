@@ -1,3 +1,5 @@
+# -*-coding: utf-8-*-
+# -*-coding: iso-8859-2-*-
 import tkinter as tk
 from tkinter import font, messagebox
 
@@ -29,17 +31,32 @@ crossed_font = font.Font(
 product_list = []
 click_count = 0
 
-# Functions
-def cross_item(item_entry):
-    item_entry.config(font=crossed_font)
+# Classes and functions
+class CrossItem:
 
-def uncross_item(item_entry):
-    item_entry.config(font=normal_font)
+    def __init__(self, item_entry):
+        self.item_entry = item_entry
 
-def delete_item(row_frame):
-    global click_count
-    click_count-=1
-    row_frame.destroy()
+    def cross_item(self, item_entry):
+        item_entry.config(font=crossed_font)
+
+
+class UncrossItem(CrossItem):
+
+    def uncross_item(self, item_entry):
+        item_entry.config(font=normal_font)
+
+
+class DeleteItem:
+
+    def __init__(self, row_frame):
+        self.row_frame = row_frame
+
+    def delete_item(self, row_frame):
+        global click_count
+        click_count-=1
+        row_frame.destroy()
+
 
 def add_new_item():
     global click_count, add_item_str
@@ -72,33 +89,38 @@ def add_new_item():
     )
     product_entry.grid(row=click_count, column=1)
     product_entry.insert(0, product_name)
+    cross_item = CrossItem(product_entry)
 
     bought_btn = tk.Button(
         row_frame,
         text='Kupione',
         width=10,
         bg='lightblue',
-        command=lambda: cross_item(product_entry),
+        command=lambda: cross_item.cross_item(product_entry),
         font=normal_font
     )
     bought_btn.grid(row=click_count, column=3)
+
+    uncrossed_item = UncrossItem(product_entry)
 
     unbought_btn = tk.Button(
         row_frame,
         text='Odznacz',
         width=10,
         bg='lime',
-        command=lambda: uncross_item(product_entry),
+        command=lambda: uncrossed_item.uncross_item(product_entry),
         font=normal_font
     )
     unbought_btn.grid(row=click_count, column=4)
+
+    deleted_item = DeleteItem(row_frame)
 
     clear_btn = tk.Button(
         row_frame,
         text='Usuń',
         width=10,
         bg='orange',
-        command=lambda: delete_item(row_frame),
+        command=lambda: deleted_item.delete_item(row_frame),
         font=normal_font
     )
     clear_btn.grid(row=click_count, column=5)
