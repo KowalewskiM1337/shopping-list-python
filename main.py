@@ -49,13 +49,15 @@ class UncrossItem(CrossItem):
 
 class DeleteItem:
 
-    def __init__(self, row_frame):
+    def __init__(self, row_frame, product_name):
         self.row_frame = row_frame
+        self.product_name = product_name
 
     def delete_item(self, row_frame):
         global click_count
         click_count-=1
         row_frame.destroy()
+        product_list.remove(self.product_name)
 
 
 def add_new_item():
@@ -113,7 +115,7 @@ def add_new_item():
     )
     unbought_btn.grid(row=click_count, column=4)
 
-    deleted_item = DeleteItem(row_frame)
+    deleted_item = DeleteItem(row_frame, product_name)
 
     clear_btn = tk.Button(
         row_frame,
